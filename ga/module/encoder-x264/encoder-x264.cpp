@@ -26,6 +26,7 @@
 #include "ga-avcodec.h"
 #include "ga-conf.h"
 #include "ga-module.h"
+#include "socketQ4S.h"
 
 #include "dpipe.h"
 
@@ -690,6 +691,15 @@ module_load() {
 	//
 	m.raw = vencoder_raw;
 	m.ioctl = vencoder_ioctl;
+	
+	//Socket de control de calidad
+	pthread_t configSock;
+	if(pthread_create(&configSock, NULL, InitControlSocketThread, NULL) != 0) {
+		ga_error("cannot create CONFIG CONTROL SOCKET\n");
+	}
+	else
+		pthread_detach(configSock);
+
 	return &m;
 }
 

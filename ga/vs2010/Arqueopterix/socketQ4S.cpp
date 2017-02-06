@@ -7,7 +7,7 @@
 #include "ga-common.h"
 #include "ga-module.h"
 #include "encoder-common.h"
-#include "comun.h"
+#include "socketQ4S.h"
 
 #include <string>
 #include <sstream>
@@ -68,36 +68,42 @@ void * InitControlSocketThread(void *){
 				else if (valores[0].compare("SET_CRF")==0){
 					try{
 						int crf = stoi(valores[1]);
+						if (crf<=0) continue;
 						Reconfigure(crf, -1, -1, -1, -1, -1);
 					}catch(...){}
 				}
 				else if (valores[0].compare("SET_FRAMERATE")==0){
 					try{
 						int framerate = stoi(valores[1]);
+						if (framerate<=0) continue;
 						Reconfigure(-1, framerate, -1, -1, -1, -1);
 					}catch(...){}
 				}
 				else if (valores[0].compare("SET_BITRATE")==0){
 					try{
 						int bitrate = stoi(valores[1]);
+						if (bitrate<=0) continue;
 						Reconfigure(-1, -1, bitrate, -1, -1, -1);
 					}catch(...){}
 				}
 				else if (valores[0].compare("SET_BUFFERSIZE")==0){
 					try{
 						int buffsize = stoi(valores[1]);
+						if (buffsize<=0) continue;
 						Reconfigure(-1, -1, -1, buffsize, -1, -1);
 					}catch(...){}
 				}
 				else if (valores[0].compare("SET_WIDTH")==0){
 					try{
 						int width = stoi(valores[1]);
+						if (width<=0) continue;
 						Reconfigure(-1, -1, -1, -1, width, -1);
 					}catch(...){}
 				}
 				else if (valores[0].compare("SET_HEIGHT")==0){
 					try{
 						int height = stoi(valores[1]);
+						if (height<=0) continue;
 						Reconfigure(-1, -1, -1, -1, -1, height);
 					}catch(...){}
 				}

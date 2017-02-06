@@ -30,7 +30,7 @@
 #include "rtspconf.h"
 #include "controller.h"
 #include "encoder-common.h"
-#include "comun.h"
+//#include "socketQ4S.h"
 
 #include "ga-hook-common.h"
 #ifdef WIN32

@@ -1,22 +1,22 @@
 
-#ifndef __COMUN_H__
-#define __COMUN_H__
+#ifndef __SOCKETQ4S_H__
+#define __SOCKETQ4S_H__
 
-//#define COMUNImport   __declspec( dllimport )
-#define COMUNExport   __declspec( dllexport )
+//#define SOCKETQ4SImport   __declspec( dllimport )
+#define SOCKETQ4SExport   __declspec( dllexport )
 
 #include <vector>
 using namespace std;
 
-COMUNExport void *test_reconfig(void *);
-COMUNExport void *InitControlSocketThread(void *);
-//COMUNExport void InitControlSocket();
+SOCKETQ4SExport void *test_reconfig(void *);
+SOCKETQ4SExport void *InitControlSocketThread(void *);
+//SOCKETQ4SExport void InitControlSocket();
 
 void split(const string &s, char delim, vector<string> &elems);
 vector<string> split(const string &s, char delim);
 void Reconfigure(int crf, int framerate, int bitrate, int buffsize, int width, int height);
 
-#endif	/* __COMUN_H__ */
+#endif	/* __SOCKETQ4S_H__ */
 
 
 /*EJEMPLO DE THREAD

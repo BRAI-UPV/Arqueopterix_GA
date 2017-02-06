@@ -41,12 +41,12 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\core;..\..\..\deps.win32\include;..\..\..\deps.win32\include\SDL;..\..\..\deps.win32\include\live555;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\core;..\..\..\deps.win32\include;..\..\..\deps.win32\include\SDL;..\..\..\deps.win32\include\live555;..\Arqueopterix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GA_MODULE;WIN32;USE_GA_WIN32_MACRO;__STDC_CONSTANT_MACROS;FF_API_OLD_AVIO=0;PIPELINE_FILTER;_WIN32_WINNT=0x0501;NTDDI_VERSION=0x05010000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libga.lib;ws2_32.lib;SDL2.lib;swscale.lib;swresample.lib;postproc.lib;avdevice.lib;avfilter.lib;avformat.lib;avcodec.lib;avutil.lib;libx264.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libga.lib;ws2_32.lib;SDL2.lib;swscale.lib;swresample.lib;postproc.lib;avdevice.lib;avfilter.lib;avformat.lib;avcodec.lib;avutil.lib;libx264.lib;pthreadVC2.lib;Arqueopterix.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)mod\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>..\..\..\deps.win32\lib;$(OutDir)</AdditionalLibraryDirectories>
     </Link>
@@ -57,7 +57,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\core;..\..\..\deps.win32\include;..\..\..\deps.win32\include\SDL;..\..\..\deps.win32\include\live555;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\core;..\..\..\deps.win32\include;..\..\..\deps.win32\include\SDL;..\..\..\deps.win32\include\live555;..\Arqueopterix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GA_MODULE;WIN32;USE_GA_WIN32_MACRO;__STDC_CONSTANT_MACROS;FF_API_OLD_AVIO=0;PIPELINE_FILTER;_WIN32_WINNT=0x0501;NTDDI_VERSION=0x05010000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -68,7 +68,7 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>false</OptimizeReferences>
-      <AdditionalDependencies>libga.lib;ws2_32.lib;SDL2.lib;swscale.lib;swresample.lib;postproc.lib;avdevice.lib;avfilter.lib;avformat.lib;avcodec.lib;avutil.lib;libx264.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libga.lib;ws2_32.lib;SDL2.lib;swscale.lib;swresample.lib;postproc.lib;avdevice.lib;avfilter.lib;avformat.lib;avcodec.lib;avutil.lib;libx264.lib;pthreadVC2.lib;Arqueopterix.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)mod\$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>..\..\..\deps.win32\lib;$(OutDir)</AdditionalLibraryDirectories>
     </Link>

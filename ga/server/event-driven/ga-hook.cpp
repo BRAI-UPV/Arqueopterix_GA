@@ -28,7 +28,7 @@
 #include "controller.h"
 #include "encoder-common.h"
 #include "ctrl-sdl.h"
-#include "comun.h"
+//#include "socketQ4S.h"
 
 #include "hook-function.h"
 #include "ga-hook-common.h"
@@ -599,12 +599,13 @@ hook_proc() {
 	pthread_t ga_server_thread;
 	
 	//AllocConsole();
-	ga_log ("##### Texto de salida del hook\n");
+	ga_log ("##### Texto de salida del hook 1\n");
 
 	if(do_hook(hook_type, sizeof(hook_type)) < 0) {
 		ga_error("hook_proc: hook failed.\n");
 		return -1;
 	}
+	ga_log ("##### Texto de salida del hook 2\n");
 	
 	// SDL: override controller
 	if(strcasecmp(hook_type, "sdl") == 0) {
@@ -619,6 +620,8 @@ hook_proc() {
 		no_default_controller = 1;
 		ga_error("hook_proc: sdl2 - use native replayer.\n");
 	}
+	
+	ga_log ("##### Texto de salida del hook 3\n"); 
 
 	// start hook server
 	if(pthread_create(&ga_server_thread, NULL, ga_server, NULL) != 0) {
@@ -626,6 +629,7 @@ hook_proc() {
 		return -1;
 	}
 	pthread_detach(ga_server_thread);
+	ga_log ("##### Texto de salida del hook 4\n");
 	
 	//ga_testReconf();
 	/*pthread_t t;
@@ -635,13 +639,14 @@ hook_proc() {
 	}
 	pthread_detach(t);*/
 	
+	//PASADA ESTA CREACION DEL THREAD AL ARCHIVO ENCODER-X264.CPP
 	//Socket de control de calidad
-	pthread_t configSock;
+	/*pthread_t configSock;
 	if(pthread_create(&configSock, NULL, InitControlSocketThread, NULL) != 0) {
 		ga_error("cannot create CONFIG CONTROL SOCKET\n");
 		return -1;
 	}
-	pthread_detach(configSock);
+	pthread_detach(configSock);*/
 	//InitControlSocket();
 
 	// show current directory
@@ -649,7 +654,7 @@ hook_proc() {
 		ga_error("hook_proc: current directory [%s]\n", cwd);
 	}
 	
-	ga_log ("##### Texto de salida del hook 2\n");
+	ga_log ("##### Texto de salida del hook 5\n");
 	return 0;
 }
 
