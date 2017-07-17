@@ -187,14 +187,14 @@ test_reconfig(void *) {
 #ifdef WIN32
 			Sleep(1);
 #else
-			sleep(1);
+			sleep(0.001f);
 #endif
 			continue;
 		}
 #ifdef WIN32
 		Sleep(10 * 1000);
 #else
-		sleep(20);
+		sleep(10);
 #endif
 		bzero(&reconf, sizeof(reconf));
 		reconf.id = 0;

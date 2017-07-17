@@ -17,6 +17,7 @@
  */
 
 #include <stdio.h>
+#include <time.h>
 
 #include "vsource.h"
 #include "rtspconf.h"
@@ -53,6 +54,10 @@ static char *_sps[VIDEO_SOURCE_CHANNEL_MAX];
 static int _spslen[VIDEO_SOURCE_CHANNEL_MAX];
 static char *_pps[VIDEO_SOURCE_CHANNEL_MAX];
 static int _ppslen[VIDEO_SOURCE_CHANNEL_MAX];
+
+clock_t timeEnvioPrev;
+clock_t timeNuevoEnvio;
+int fps[VIDEO_SOURCE_CHANNEL_MAX];
 
 //#define	SAVEENC	"save.264"
 #ifdef SAVEENC
@@ -110,6 +115,7 @@ vencoder_init(void *arg) {
 	}
 	if(vencoder_initialized != 0)
 		return 0;
+
 	//
 	for(iid = 0; iid < video_source_channels(); iid++) {
 		char pipename[64];
@@ -209,6 +215,7 @@ vencoder_init(void *arg) {
 				name = strtok_r(NULL, ":", &saveptr);
 			}
 		}
+		fps[iid] = params.i_fps_num;
 		//
 		vencoder[iid] = x264_encoder_open(&params);
 		if(vencoder[iid] == NULL)
@@ -224,12 +231,15 @@ vencoder_init(void *arg) {
 			params.crop_rect.i_right, params.crop_rect.i_bottom,
 			params.i_threads, params.i_slice_count,
 			params.b_repeat_headers, params.b_annexb);
+
 	}
+
 #ifdef SAVEENC
 	fsaveenc = fopen(SAVEENC, "wb");
 #endif
 	vencoder_initialized = 1;
 	ga_error("video encoder: initialized.\n");
+	timeEnvioPrev = clock();
 	return 0;
 init_failed:
 	vencoder_deinit(NULL);
@@ -263,6 +273,7 @@ vencoder_reconfigure(int iid) {
 			ga_log("***Cambia framerate_n\n");
 			params.i_fps_num = reconf->framerate_n;
 			params.i_fps_den = reconf->framerate_d > 0 ? reconf->framerate_d : 1;
+			fps[iid] = reconf->framerate_n;
 			doit++;
 		}
 		if(reconf->bitrateKbps > 0) {
@@ -356,6 +367,8 @@ vencoder_threadproc(void *arg) {
 		int i, size, nnal;
 		struct timeval tv;
 		struct timespec to;
+
+
 		gettimeofday(&tv, NULL);
 		// need reconfigure?
 		vencoder_reconfigure(iid);
@@ -364,9 +377,16 @@ vencoder_threadproc(void *arg) {
 		to.tv_nsec = tv.tv_usec * 1000;
 		data = dpipe_load(pipe, &to);
 		if(data == NULL) {
-			ga_error("viedo encoder: image source timed out.\n");
+			ga_error("video encoder: image source timed out.\n");
 			continue;
 		}
+
+		//COMPROBAMOS SI TENEMOS QUE ESPERAR
+		if (timeNuevoEnvio>clock()){
+			dpipe_put(pipe, data);
+			continue;
+		}
+
 		frame = (vsource_frame_t*) data->pointer;
 		// handle pts
 		if(basePts == -1LL) {
@@ -511,6 +531,20 @@ vencoder_threadproc(void *arg) {
 				ga_error("first video frame written (pts=%lld)\n", pic_in.i_pts);
 			}
 		}
+
+		//LIMITE DE FPS
+		//AQUI HAY QUE VER EL TIEMPO QUE HA PASADO DESDE EL ENVIO DEL ANTERIOR FRAME Y ESPERAR, SI HACE FALTA,
+		//PARA QUE NO SE SUPERE LA TASA DE FRAMES
+		float tProceso = (((float)(clock()-timeEnvioPrev))/CLOCKS_PER_SEC)*1000;
+		ga_log("##### Threat: timeProceso:%f, fps = %d", tProceso, fps[iid]);
+		float espera = 1000.0/fps[iid] - tProceso;
+		if (espera>0){
+			ga_log(", espera:%f\n", espera);
+		}
+		else
+			ga_log("\n");
+		timeNuevoEnvio = clock()+espera*CLOCKS_PER_SEC/1000.0f;
+		timeEnvioPrev = clock();
 	}
 	//
 video_quit:

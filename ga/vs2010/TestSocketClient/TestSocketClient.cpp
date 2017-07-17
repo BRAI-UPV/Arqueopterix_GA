@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     while(1)
     {
         printf("Enter message : ");
-        gets(message);
+        gets_s(message);
          
         //send the message
         if (sendto(s, message, strlen(message) , 0 , (struct sockaddr *) &si_other, slen) == SOCKET_ERROR)
